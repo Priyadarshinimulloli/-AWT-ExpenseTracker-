@@ -1,10 +1,13 @@
 package awt;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
+
+
 
 public class FinanaceManager {
 	private static Connection conn;
@@ -19,9 +22,12 @@ public class FinanaceManager {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		 conn=DriverManager.getConnection(url,user,pass);
 		Statement statement=conn.createStatement();
-		//statement.execute("CREATE DATABASE finanace IF NOT EXISTS finanace");
+//		statement.execute("CREATE DATABASE finanace IF NOT EXISTS finanace");
 		 statement.execute("USE finanace");
-		
+//		 String dropTableQuery = "DROP TABLE IF EXISTS CUSTOMER";
+//		 statement.executeUpdate(dropTableQuery);
+//		 
+//		
 //		String customer="CREATE TABLE IF NOT EXISTS CUSTOMER("
 //		                 +"id INT AUTO_INCREMENT PRIMARY KEY,"
 //		                 + "name VARCHAR(255) NOT NULL,"
@@ -30,7 +36,7 @@ public class FinanaceManager {
 //		                 +")";
 //		statement.executeUpdate(customer);
 //		 System.out.println(" CUSTOMER table created successfully!");
-		}catch(SQLException e) {
+         }catch(SQLException e) {
 			e.printStackTrace();
 		}
 		
@@ -68,7 +74,7 @@ public class FinanaceManager {
 		//submit button
 		
 		JButton button=new JButton("Submit");
-		button.setBounds(30,250,160,30);
+		button.setBounds(30,250,100,30);
 		frame.add(button);
 		
 		button.addActionListener(new ActionListener() {
@@ -93,6 +99,42 @@ public class FinanaceManager {
 					e.printStackTrace();
 				}
 				
+			}
+		});
+		
+		JButton view=new JButton("View");
+		view.setBounds(150,250,100,30);
+		frame.add(view);
+		
+		view.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				JFrame tableFrame=new JFrame("Customer List");
+				tableFrame.setSize(500,400);
+				
+				String[] col= {"id","name","email","phone"};
+				DefaultTableModel model=new DefaultTableModel(col,0);
+				
+				try {
+					PreparedStatement statement=conn.prepareStatement("SELECT * FROM CUSTOMER");
+					ResultSet res=statement.executeQuery();
+					
+					while(res.next()) {
+						model.addRow(new Object[]{
+							res.getInt("id"),
+							res.getString("name"),
+							res.getString("email"),
+							res.getString("phone"),
+
+						});
+					}
+					
+					JTable table=new JTable(model);
+					JScrollPane scrollpane=new JScrollPane(table);
+					tableFrame.add(scrollpane);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				tableFrame.setVisible(true);
 			}
 		});
 	
