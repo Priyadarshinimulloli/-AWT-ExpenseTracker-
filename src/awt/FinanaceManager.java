@@ -28,7 +28,7 @@ class ButtonEditorDelete extends DefaultCellEditor {
     private JTable table;
     private Connection conn;
     private DefaultTableModel model;
-    private String tableName; // Table Name to delete from
+    private String tableName; 
 
     public ButtonEditorDelete(final JTable table, Connection conn, DefaultTableModel model, String tableName) {
         super(new JTextField());
@@ -41,7 +41,7 @@ class ButtonEditorDelete extends DefaultCellEditor {
         button.setOpaque(true);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int id = (int) table.getValueAt(selectedRow, 0); // Get ID from table
+                int id = (int) table.getValueAt(selectedRow, 0);
                 deleteRow(id, selectedRow);
             }
         });
@@ -65,7 +65,7 @@ class ButtonEditorDelete extends DefaultCellEditor {
             delStmt.executeUpdate();
 
             JOptionPane.showMessageDialog(null, tableName + " record deleted successfully!");
-            model.removeRow(row); // Remove row from table
+            model.removeRow(row); 
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -94,7 +94,7 @@ public class FinanaceManager {
 		}
 		
 		
-		//Frontend
+		
 		final JFrame frame=new JFrame("Finance Manager");
 		frame.setSize(600,600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -217,7 +217,6 @@ public class FinanaceManager {
 				tableFrame.setLayout(new GridLayout(2,1));
 				tableFrame.setLocationRelativeTo(null);;
 				
-				
 				String[] col= {"Id","Name","Email","Phone","Delete"};
 				DefaultTableModel model=new DefaultTableModel(col,0);
 				JTable table=new JTable(model);
@@ -321,11 +320,11 @@ public class FinanaceManager {
 		                textArea.setText(result.toString());
 		            }
 
-		            // Add JTextArea to JScrollPane for scrollability
+		           
 		            JScrollPane scrollPane = new JScrollPane(textArea);
 		            frame.add(scrollPane);
 
-		            // Make the frame visible
+		           
 		            frame.setVisible(true);
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
